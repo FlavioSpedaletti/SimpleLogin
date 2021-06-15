@@ -10,7 +10,7 @@ using SimpleLogin.Models;
 
 namespace SimpleLogin.Controllers
 {
-    public class Account : Controller
+    public class AccountController : Controller
     {
         public IActionResult Login()
         {
@@ -26,7 +26,7 @@ namespace SimpleLogin.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Login(LoginViewModel model)
+        public async Task<IActionResult> Login(LoginViewModel model, string returnUrl)
         {
             if (ModelState.IsValid)
             {
@@ -37,20 +37,20 @@ namespace SimpleLogin.Controllers
                     try
                     {
                         claims.Add(new Claim(ClaimTypes.Name, model.Email));
-                        claims.Add(new Claim(ClaimTypes.Role, "normal_user"));
+                        claims.Add(new Claim(ClaimTypes.Role, "admin"));
                         var claimIdenties = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
                         var claimPrincipal = new ClaimsPrincipal(claimIdenties);
                         var authenticationManager = Request.HttpContext;
 
                         await authenticationManager.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, claimPrincipal, new AuthenticationProperties() { IsPersistent = true });
+
+                        return !string.IsNullOrEmpty(returnUrl) ? Redirect(returnUrl) : RedirectToAction("index", "home");
                     }
                     catch (Exception ex)
                     {
                         // Info  
-                        throw ex;
+                        throw;
                     }
-
-                    return RedirectToAction("index", "home");
                 }
 
                 ModelState.AddModelError(string.Empty, "Invalid Login Attempt");

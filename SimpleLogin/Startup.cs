@@ -28,7 +28,7 @@ namespace SimpleLogin
                 options.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
             }).AddCookie(options =>
             {
-                options.LoginPath = new PathString("/Login");
+                options.LoginPath = new PathString("/Account/Login");
                 options.ExpireTimeSpan = TimeSpan.FromMinutes(5.0);
             });
 
