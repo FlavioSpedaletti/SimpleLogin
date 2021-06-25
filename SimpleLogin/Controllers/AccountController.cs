@@ -75,5 +75,10 @@ namespace SimpleLogin.Controllers
             //return RedirectToPage("/");
             return RedirectToAction("index", "home");
         }
+
+        public IActionResult AccessDenied()
+        {
+            return View();
+        }
     }
 }

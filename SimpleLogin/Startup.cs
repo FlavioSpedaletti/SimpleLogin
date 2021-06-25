@@ -29,7 +29,10 @@ namespace SimpleLogin
             }).AddCookie(options =>
             {
                 options.LoginPath = new PathString("/Account/Login");
-                options.ExpireTimeSpan = TimeSpan.FromMinutes(5.0);
+                options.LogoutPath = new PathString("/Account/Logout");
+                options.AccessDeniedPath = "/Account/AccessDenied";
+                options.ReturnUrlParameter = "ReturnUrl";
+                options.ExpireTimeSpan = TimeSpan.FromHours(1);
             });
 
             services.AddControllersWithViews().AddRazorPagesOptions(options =>
